@@ -1,0 +1,18 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Directories #
+
+target
+target/**
+.project
+.project/**
+.settings
+.settings/**
+*.project
+*.prefs
+*.component
