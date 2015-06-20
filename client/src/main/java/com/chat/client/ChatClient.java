@@ -12,11 +12,23 @@ import java.net.Socket;
 public class ChatClient {
 
     public static void main(String[] args) throws IOException {
+
+        Integer port = null;
+
+        //gets port number from args
+        if (args.length > 0){
+            try {
+                port = Integer.valueOf(args[0]);
+            } catch (NumberFormatException e) {
+                System.out.println("Port" + args[0] + " must be an integer.");
+                System.exit(1);
+            }
+        }
+
         Socket socket = null;
 
         System.out.println("Welcome to Client");
-
-        socket = new Socket(args[0], 8888);
+        socket = new Socket(args[0], port);
         BufferedReader brSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter pwSocket = new PrintWriter(socket.getOutputStream(), true);
         BufferedReader brSystem = new BufferedReader(new InputStreamReader(System.in));
