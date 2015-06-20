@@ -13,28 +13,40 @@ import java.net.Socket;
 public class ChatServer {
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Welcome to Server");
+        Integer port = null;
+
+        //gets port number from args
+        if (args.length > 0){
+            try {
+                port = Integer.valueOf(args[0]);
+            } catch (NumberFormatException e) {
+                System.out.println("Port" + args[0] + " must be an integer.");
+                System.exit(1);
+            }
+        }
+
         BufferedReader br = null;
         PrintWriter pw = null;
 
         ServerSocket serverSocket = null;
         Socket socket = null;
 
-        // create server socket
+//      create server socket
         try {
-            serverSocket = new ServerSocket(8888);
+            serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            System.out.println("Couldn't listen to port 8888");
-            System.exit(-1);
+            System.out.println("Couldn't listen to port " + port);
+            System.exit(1);
         }
 
         try {
+            System.out.println("Welcome to Server");
             System.out.print("Waiting for a client...");
             socket = serverSocket.accept();
             System.out.println("Client connected");
         } catch (IOException e) {
             System.out.println("Can't accept");
-            System.exit(-1);
+            System.exit(1);
         }
 
         br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
