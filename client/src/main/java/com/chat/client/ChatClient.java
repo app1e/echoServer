@@ -18,9 +18,9 @@ public class ChatClient {
         //gets port number from args
         if (args.length > 0){
             try {
-                port = Integer.valueOf(args[0]);
+                port = Integer.valueOf(args[1]);
             } catch (NumberFormatException e) {
-                System.out.println("Port" + args[0] + " must be an integer.");
+                System.out.println("Port" + args[1] + " must be an integer.");
                 System.exit(1);
             }
         }
