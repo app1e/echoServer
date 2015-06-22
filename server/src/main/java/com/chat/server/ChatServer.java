@@ -23,6 +23,8 @@ public class ChatServer {
                 System.out.println("Port" + args[0] + " must be an integer.");
                 System.exit(1);
             }
+        } else {
+            throw new IllegalArgumentException("Wrong number of args. Required (port)");
         }
 
         BufferedReader br = null;

@@ -16,13 +16,15 @@ public class ChatClient {
         Integer port = null;
 
         //gets port number from args
-        if (args.length > 0){
+        if (args.length > 1){
             try {
                 port = Integer.valueOf(args[1]);
             } catch (NumberFormatException e) {
                 System.out.println("Port" + args[1] + " must be an integer.");
                 System.exit(1);
             }
+        } else {
+            throw new IllegalArgumentException("Wrong number of args. Required (host, port)");
         }
 
         Socket socket = null;
