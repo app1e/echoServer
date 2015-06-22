@@ -16,8 +16,6 @@ public class MessageListener implements Runnable{
         this.socket = socket;
     }
 
-
-
     @Override
     public void run() {
         BufferedReader br = null;
@@ -26,7 +24,7 @@ public class MessageListener implements Runnable{
             br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             pw = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         String input;
@@ -39,15 +37,17 @@ public class MessageListener implements Runnable{
                 System.out.println(input);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                pw.close();
+                br.close();
+                socket.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
         }
-        try {
-            pw.close();
-            br.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
     }
 }

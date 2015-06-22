@@ -24,7 +24,12 @@ public class ChatClient {
                 System.exit(1);
             }
         } else {
-            throw new IllegalArgumentException("Wrong number of args. Required (host, port)");
+            try {
+                throw new IllegalArgumentException("Wrong number of args. Required (host, port)");
+            } catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
+                System.exit(1);
+            }
         }
 
         Socket socket = null;
@@ -35,14 +40,14 @@ public class ChatClient {
         PrintWriter pwSocket = new PrintWriter(socket.getOutputStream(), true);
         BufferedReader brSystem = new BufferedReader(new InputStreamReader(System.in));
 
-        String client;
-        String server;
+        String clientMsg;
+        String serverMsg;
 
-        while ((client = brSystem.readLine()) != null) {
-            pwSocket.println(client);
-            server = brSocket.readLine();
-            System.out.println(server);
-            if (client.equalsIgnoreCase("close") || client.equalsIgnoreCase("exit"))
+        while ((clientMsg = brSystem.readLine()) != null) {
+            pwSocket.println(clientMsg);
+            serverMsg = brSocket.readLine();
+            System.out.println(serverMsg);
+            if (clientMsg.equalsIgnoreCase("close") || clientMsg.equalsIgnoreCase("exit"))
                 break;
         }
 

@@ -20,11 +20,17 @@ public class ChatServer {
             try {
                 port = Integer.valueOf(args[0]);
             } catch (NumberFormatException e) {
-                System.out.println("Port" + args[0] + " must be an integer.");
+                System.out.println("Port must be an integer.");
                 System.exit(1);
             }
         } else {
-            throw new IllegalArgumentException("Wrong number of args. Required (port)");
+            try{
+                throw new IllegalArgumentException("Wrong number of args. Required (port)");
+            } catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
+                System.exit(1);
+            }
+
         }
 
         ServerSocket serverSocket = null;
