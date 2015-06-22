@@ -16,7 +16,7 @@ public class ChatServer {
         Integer port = null;
 
         //gets port number from args
-        if (args.length > 0){
+        if (args.length == 1){
             try {
                 port = Integer.valueOf(args[0]);
             } catch (NumberFormatException e) {
