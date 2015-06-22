@@ -27,11 +27,7 @@ public class ChatServer {
             throw new IllegalArgumentException("Wrong number of args. Required (port)");
         }
 
-        BufferedReader br = null;
-        PrintWriter pw = null;
-
         ServerSocket serverSocket = null;
-        Socket socket = null;
 
 //      create server socket
         try {
@@ -44,26 +40,13 @@ public class ChatServer {
         try {
             System.out.println("Welcome to Server");
             System.out.print("Waiting for a client...");
-            socket = serverSocket.accept();
+            MessageListener ml = new MessageListener(serverSocket.accept());
+            Thread mlThread = new Thread(ml);
+            mlThread.start();
             System.out.println("Client connected");
         } catch (IOException e) {
             System.out.println("Can't accept");
             System.exit(1);
         }
-
-        br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        pw = new PrintWriter(socket.getOutputStream(), true);
-        String input;
-
-        System.out.println("Wait for messages");
-        while ((input = br.readLine()) != null) {
-            if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("close")) break;
-            pw.println("S ::: " + input);
-            System.out.println(input);
-        }
-        pw.close();
-        br.close();
-        socket.close();
-        serverSocket.close();
     }
 }
