@@ -27,14 +27,14 @@ public class MessageListener implements Runnable{
             System.out.println(e.getMessage());
         }
 
-        String input;
+        String clientMessage;
 
         System.out.println("Waiting for messages");
         try {
-            while ((input = br.readLine()) != null) {
-                if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("close")) break;
-                pw.println("S ::: " + input);
-                System.out.println(input);
+            while ((clientMessage = br.readLine()) != null) {
+                if (clientMessage.equalsIgnoreCase("exit") || clientMessage.equalsIgnoreCase("close")) break;
+                System.out.println("Client Msg ::: " + clientMessage);
+                pw.println(clientMessage);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());

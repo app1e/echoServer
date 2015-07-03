@@ -4,8 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 
 /**
  * Created by alexey.ivlev on 19.06.15.
@@ -13,46 +12,33 @@ import java.net.Socket;
 public class ChatServer {
 
     public static void main(String[] args) throws IOException {
-        Integer port = null;
 
-        //gets port number from args
-        if (args.length == 1){
-            try {
-                port = Integer.valueOf(args[0]);
-            } catch (NumberFormatException e) {
-                System.out.println("Port must be an integer.");
-                System.exit(1);
+        if(args.length == 2){
+            switch (args[0].toLowerCase()){
+                case "udp" : startUPDServer(args);
+                    break;
+                case "tcp" : startTCPServer(args);
+                    break;
             }
         } else {
             try{
-                throw new IllegalArgumentException("Wrong number of args. Required (port)");
+                throw new IllegalArgumentException("Wrong number of args. Required: Type[UPD | TCP], port");
             } catch (IllegalArgumentException e){
                 System.out.println(e.getMessage());
                 System.exit(1);
             }
-
         }
+    }
 
-        ServerSocket serverSocket = null;
+    public static void startUPDServer(String[] args){
+        UDPServer server = new UDPServer(args);
+        Thread serverThread = new Thread(server);
+        serverThread.start();
+    }
 
-//      create server socket
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            System.out.println("Couldn't listen to port " + port);
-            System.exit(1);
-        }
-
-        try {
-            System.out.println("Welcome to Server");
-            System.out.print("Waiting for a client...");
-            MessageListener ml = new MessageListener(serverSocket.accept());
-            Thread mlThread = new Thread(ml);
-            mlThread.start();
-            System.out.println("Client connected");
-        } catch (IOException e) {
-            System.out.println("Can't accept");
-            System.exit(1);
-        }
+    public static void startTCPServer(String[] args){
+        TCPServer server = new TCPServer(args);
+        Thread serverThread = new Thread(server);
+        serverThread.start();
     }
 }
