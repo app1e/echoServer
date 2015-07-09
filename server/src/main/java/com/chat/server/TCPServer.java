@@ -6,23 +6,16 @@ import java.net.ServerSocket;
 /**
  * Created by alexey.ivlev on 03.07.15.
  */
-public class TCPServer implements Runnable{
-    private String[] args;
+public class TCPServer implements Server{
+    private Integer port;
 
-    public TCPServer(String[] args) {
-        this.args = args;
+    public TCPServer(Integer port) {
+        this.port = port;
     }
 
     @Override
     public void run() {
-        Integer port = null;
         ServerSocket serverSocket = null;
-        try {
-                port = Integer.valueOf(args[1]);
-        } catch (NumberFormatException e) {
-            System.out.println("Port must be an integer.");
-            System.exit(1);
-        }
 
         try {
             serverSocket = new ServerSocket(port);

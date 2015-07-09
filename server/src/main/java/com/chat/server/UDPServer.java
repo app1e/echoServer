@@ -9,25 +9,18 @@ import java.net.SocketException;
 /**
  * Created by alexey.ivlev on 03.07.15.
  */
-public class UDPServer implements Runnable{
-    private String[] args;
+public class UDPServer implements Server{
+    private Integer port;
 
-    public UDPServer(String[] args) {
-        this.args = args;
+    public UDPServer(Integer port) {
+        this.port = port;
     }
 
     @Override
     public void run() {
-        Integer serverPort = null;
-        try {
-            serverPort = Integer.valueOf(args[1]);
-        } catch (NumberFormatException e) {
-            System.out.println("Port" + args[1] + " must be an integer.");
-            System.exit(1);
-        }
         DatagramSocket serverSocket = null;
         try {
-            serverSocket = new DatagramSocket(serverPort);
+            serverSocket = new DatagramSocket(port);
         } catch (SocketException e) {
             e.printStackTrace();
         }

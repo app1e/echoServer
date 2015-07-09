@@ -8,23 +8,17 @@ import java.net.*;
 /**
  * Created by alexey.ivlev on 03.07.15.
  */
-public class UPDClient implements Runnable{
-    String[] args;
+public class UDPClient implements Client{
+    private String host;
+    private Integer port;
 
-    public UPDClient(String[] args) {
-        this.args = args;
+    public UDPClient(String host, Integer port) {
+        this.host = host;
+        this.port = port;
     }
 
     @Override
     public void run() {
-        Integer port = null;
-
-        try {
-            port = Integer.valueOf(args[2]);
-        } catch (NumberFormatException e) {
-            System.out.println("Port" + args[2] + " must be an integer.");
-            System.exit(1);
-        }
 
         System.out.println("Welcome to UDP Client");
         System.out.println("Write your message");
@@ -37,7 +31,7 @@ public class UPDClient implements Runnable{
         }
         InetAddress IPAddress = null;
         try {
-            IPAddress = InetAddress.getByName(args[1]);
+            IPAddress = InetAddress.getByName(host);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

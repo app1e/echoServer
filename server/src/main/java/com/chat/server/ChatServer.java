@@ -1,10 +1,6 @@
 package com.chat.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.*;
 
 /**
  * Created by alexey.ivlev on 19.06.15.
@@ -12,15 +8,8 @@ import java.net.*;
 public class ChatServer {
 
     public static void main(String[] args) throws IOException {
-
-        if(args.length == 2){
-            switch (args[0].toLowerCase()){
-                case "udp" : startUPDServer(args);
-                    break;
-                case "tcp" : startTCPServer(args);
-                    break;
-            }
-        } else {
+        Integer port = null;
+        if(args.length != 2){
             try{
                 throw new IllegalArgumentException("Wrong number of args. Required: Type[UPD | TCP], port");
             } catch (IllegalArgumentException e){
@@ -28,17 +17,16 @@ public class ChatServer {
                 System.exit(1);
             }
         }
-    }
 
-    public static void startUPDServer(String[] args){
-        UDPServer server = new UDPServer(args);
-        Thread serverThread = new Thread(server);
-        serverThread.start();
-    }
+        try {
+            port = Integer.valueOf(args[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Port" + args[1] + " must be an integer.");
+            System.exit(1);
+        }
 
-    public static void startTCPServer(String[] args){
-        TCPServer server = new TCPServer(args);
-        Thread serverThread = new Thread(server);
+        ServerAdapter serverAdapter = new ServerAdapter(args[0], port);
+        Thread serverThread = new Thread(serverAdapter.getServer());
         serverThread.start();
     }
 }

@@ -1,13 +1,6 @@
 package com.chat.client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.Socket;
 
 /**
  * Created by alexey.ivlev on 19.06.15.
@@ -15,14 +8,9 @@ import java.net.Socket;
 public class ChatClient {
 
     public static void main(String[] args) throws IOException {
+        Integer port = null;
 
-        if(args.length == 3){
-            switch (args[0].toLowerCase()){
-                case "udp" : startUPDClient(args);
-                    break;
-                case "tcp" : startTCPClient(args);
-            }
-        } else {
+        if(args.length != 3){
             try{
                 throw new IllegalArgumentException("Wrong number of args. Required: Type[UPD | TCP], host, port");
             } catch (IllegalArgumentException e){
@@ -30,17 +18,16 @@ public class ChatClient {
                 System.exit(1);
             }
         }
-    }
 
-    public static void startUPDClient(String[] args){
-        UPDClient client = new UPDClient(args);
-        Thread clientThread = new Thread(client);
-        clientThread.start();
-    }
+        try {
+            port = Integer.valueOf(args[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("Port" + args[1] + " must be an integer.");
+            System.exit(1);
+        }
 
-    public static void startTCPClient(String[] args){
-        TCPClient client = new TCPClient(args);
-        Thread clientThread = new Thread(client);
+        ClientAdapter clientAdapter = new ClientAdapter(args[0], args[1], port);
+        Thread clientThread = new Thread(clientAdapter.getClient());
         clientThread.start();
     }
 

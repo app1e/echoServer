@@ -9,29 +9,23 @@ import java.net.Socket;
 /**
  * Created by alexey.ivlev on 03.07.15.
  */
-public class TCPClient implements Runnable{
+public class TCPClient implements Client{
 
-    String[] args = null;
+    private String host;
+    private Integer port;
 
-    public TCPClient(String[] args) {
-        this.args = args;
+    public TCPClient(String host, Integer port) {
+        this.host = host;
+        this.port = port;
     }
 
     @Override
     public void run() {
-        Integer port = null;
         Socket socket = null;
         BufferedReader brSocket = null;
         PrintWriter pwSocket = null;
-
         try {
-            port = Integer.valueOf(args[2]);
-        } catch (NumberFormatException e) {
-                System.out.println("Port" + args[2] + " must be an integer.");
-                System.exit(1);
-        }
-        try {
-            socket = new Socket(args[1], port);
+            socket = new Socket(host, port);
             brSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             pwSocket = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
