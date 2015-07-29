@@ -11,10 +11,10 @@ public class ServerAdapter {
     }
 
     public ServerAdapter(String type, Integer port){
-        if(type.equalsIgnoreCase("udp")){
-            server = new UDPServer(port);
-        } else {
+        if(type.equalsIgnoreCase("tcp")){
             server = new TCPServer(port);
+        } else {
+            server = new UDPServer(port);
         }
     }
 

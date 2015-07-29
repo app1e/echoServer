@@ -11,10 +11,10 @@ public class ClientAdapter {
     }
 
     public ClientAdapter(String type, String host, Integer port) {
-        if(type.equalsIgnoreCase("udp")){
-            client = new UDPClient(host, port);
-        } else {
+        if(type.equalsIgnoreCase("tcp")){
             client = new TCPClient(host, port);
+        } else {
+            client = new UDPClient(host, port);
         }
     }
 }

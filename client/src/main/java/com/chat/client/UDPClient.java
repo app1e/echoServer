@@ -19,22 +19,23 @@ public class UDPClient implements Client{
 
     @Override
     public void run() {
-
-        System.out.println("Welcome to UDP Client");
-        System.out.println("Write your message");
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         DatagramSocket clientSocket = null;
         try {
             clientSocket = new DatagramSocket();
         } catch (SocketException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
         InetAddress IPAddress = null;
         try {
             IPAddress = InetAddress.getByName(host);
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            System.out.println("Unknown host - " + host);
+            System.exit(1);
         }
+        System.out.println("Welcome to UDP Client");
+        System.out.println("Write your message");
         byte[] sendData = new byte[1024];
         byte[] receiveData = new byte[1024];
         String sentence;
@@ -52,7 +53,8 @@ public class UDPClient implements Client{
                 System.out.println("From Server ::: " + serverMessage);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
         } finally {
             clientSocket.close();
         }

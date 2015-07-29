@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Created by alexey.ivlev on 03.07.15.
@@ -28,8 +29,12 @@ public class TCPClient implements Client{
             socket = new Socket(host, port);
             brSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             pwSocket = new PrintWriter(socket.getOutputStream(), true);
+        } catch (UnknownHostException ex) {
+            System.out.println("Unknown host - " + host);
+            System.exit(1);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
 
         System.out.println("Welcome to TCP Client");
@@ -48,7 +53,8 @@ public class TCPClient implements Client{
                 System.out.println("From Server ::: " + serverMessage);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
         pwSocket.close();
         try {
@@ -56,7 +62,8 @@ public class TCPClient implements Client{
             brSystem.close();
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 }

@@ -22,7 +22,8 @@ public class UDPServer implements Server{
         try {
             serverSocket = new DatagramSocket(port);
         } catch (SocketException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
         System.out.println("Welcome to UDP Server");
         System.out.println("Waiting for a client...");
@@ -44,7 +45,8 @@ public class UDPServer implements Server{
                 serverSocket.send(sendPacket);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
         }finally {
             serverSocket.close();
         }

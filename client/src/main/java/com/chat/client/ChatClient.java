@@ -22,7 +22,7 @@ public class ChatClient {
         try {
             port = Integer.valueOf(args[2]);
         } catch (NumberFormatException e) {
-            System.out.println("Port" + args[1] + " must be an integer.");
+            System.out.println("Port" + args[2] + " must be an integer.");
             System.exit(1);
         }
 
