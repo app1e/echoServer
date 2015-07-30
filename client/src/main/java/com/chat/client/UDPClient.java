@@ -19,27 +19,15 @@ public class UDPClient implements Client{
 
     @Override
     public void run() {
-        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-        DatagramSocket clientSocket = null;
         try {
-            clientSocket = new DatagramSocket();
-        } catch (SocketException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
-        InetAddress IPAddress = null;
-        try {
-            IPAddress = InetAddress.getByName(host);
-        } catch (UnknownHostException e) {
-            System.out.println("Unknown host - " + host);
-            System.exit(1);
-        }
-        System.out.println("Welcome to UDP Client");
-        System.out.println("Write your message");
-        byte[] sendData = new byte[1024];
-        byte[] receiveData = new byte[1024];
-        String sentence;
-        try {
+            BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+            DatagramSocket clientSocket = new DatagramSocket();
+            InetAddress IPAddress = InetAddress.getByName(host);
+            System.out.println("Welcome to UDP Client");
+            System.out.println("Write your message");
+            byte[] sendData = new byte[1024];
+            byte[] receiveData = new byte[1024];
+            String sentence;
             while((sentence = inFromUser.readLine()) != null){
                 sendData = sentence.getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
@@ -52,12 +40,18 @@ public class UDPClient implements Client{
                 String serverMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 System.out.println("From Server ::: " + serverMessage);
             }
+            if(null != clientSocket){
+                clientSocket.close();
+            }
+        }catch (UnknownHostException e) {
+            System.out.println("Unknown host - " + host);
+            System.exit(1);
+        } catch (SocketException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.exit(1);
-        } finally {
-            clientSocket.close();
         }
-
     }
 }

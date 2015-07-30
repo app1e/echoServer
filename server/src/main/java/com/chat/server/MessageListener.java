@@ -18,36 +18,20 @@ public class MessageListener implements Runnable{
 
     @Override
     public void run() {
-        BufferedReader br = null;
-        PrintWriter pw = null;
         try{
-            br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            pw = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        String clientMessage;
-
-        System.out.println("Waiting for messages");
-        try {
+            BufferedReader br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+            String clientMessage;
+            System.out.println("Waiting for messages");
             while ((clientMessage = br.readLine()) != null) {
                 if (clientMessage.equalsIgnoreCase("exit") || clientMessage.equalsIgnoreCase("close")) break;
                 System.out.println("Client Msg ::: " + clientMessage);
                 pw.println(clientMessage);
             }
+            pw.close();
+            br.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
-        } finally {
-            try {
-                pw.close();
-                br.close();
-                socket.close();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
         }
-
-
     }
 }

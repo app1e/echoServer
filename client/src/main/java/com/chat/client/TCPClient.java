@@ -22,29 +22,18 @@ public class TCPClient implements Client{
 
     @Override
     public void run() {
-        Socket socket = null;
-        BufferedReader brSocket = null;
-        PrintWriter pwSocket = null;
         try {
-            socket = new Socket(host, port);
-            brSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            pwSocket = new PrintWriter(socket.getOutputStream(), true);
-        } catch (UnknownHostException ex) {
-            System.out.println("Unknown host - " + host);
-            System.exit(1);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
+            Socket socket = new Socket(host, port);
+            BufferedReader brSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter pwSocket = new PrintWriter(socket.getOutputStream(), true);
 
-        System.out.println("Welcome to TCP Client");
-        System.out.println("Write your message");
-        BufferedReader brSystem = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("Welcome to TCP Client");
+            System.out.println("Write your message");
+            BufferedReader brSystem = new BufferedReader(new InputStreamReader(System.in));
 
-        String clientMessage;
-        String serverMessage;
+            String clientMessage;
+            String serverMessage;
 
-        try {
             while ((clientMessage = brSystem.readLine()) != null) {
                 if (clientMessage.equalsIgnoreCase("close") || clientMessage.equalsIgnoreCase("exit"))
                     break;
@@ -52,15 +41,13 @@ public class TCPClient implements Client{
                 serverMessage = brSocket.readLine();
                 System.out.println("From Server ::: " + serverMessage);
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
-        pwSocket.close();
-        try {
-            brSocket.close();
+            pwSocket.close();
             brSystem.close();
             socket.close();
+            brSocket.close();
+        } catch (UnknownHostException ex) {
+            System.out.println("Unknown host - " + host);
+            System.exit(1);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.exit(1);

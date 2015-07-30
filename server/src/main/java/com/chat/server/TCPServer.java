@@ -15,16 +15,8 @@ public class TCPServer implements Server{
 
     @Override
     public void run() {
-        ServerSocket serverSocket = null;
-
         try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            System.out.println("Couldn't listen to port " + port);
-            System.exit(1);
-        }
-
-        try {
+            ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Welcome to TCP Server");
             System.out.println("Waiting for a client...");
             MessageListener ml = new MessageListener(serverSocket.accept());
@@ -32,7 +24,7 @@ public class TCPServer implements Server{
             mlThread.start();
             System.out.println("Client connected");
         } catch (IOException e) {
-            System.out.println("Can't accept");
+            System.out.println(e.getMessage());
             System.exit(1);
         }
     }

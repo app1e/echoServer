@@ -18,19 +18,13 @@ public class UDPServer implements Server{
 
     @Override
     public void run() {
-        DatagramSocket serverSocket = null;
         try {
-            serverSocket = new DatagramSocket(port);
-        } catch (SocketException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
-        System.out.println("Welcome to UDP Server");
-        System.out.println("Waiting for a client...");
-        byte[] receiveData = new byte[1024];
-        byte[] sendData = new byte[1024];
-        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        try {
+            DatagramSocket serverSocket = new DatagramSocket(port);
+            System.out.println("Welcome to UDP Server");
+            System.out.println("Waiting for a client...");
+            byte[] receiveData = new byte[1024];
+            byte[] sendData = new byte[1024];
+            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             while(true){
                 serverSocket.receive(receivePacket);
                 String clientMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
@@ -44,11 +38,15 @@ public class UDPServer implements Server{
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
                 serverSocket.send(sendPacket);
             }
+            if(null != serverSocket){
+                serverSocket.close();
+            }
+        } catch (SocketException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.exit(1);
-        }finally {
-            serverSocket.close();
         }
     }
 }

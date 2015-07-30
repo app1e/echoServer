@@ -7,7 +7,7 @@ import java.io.IOException;
  */
 public class ChatServer {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Integer port = null;
         if(args.length != 2){
             try{
