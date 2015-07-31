@@ -15,8 +15,8 @@ public class TCPServer implements Server{
 
     @Override
     public void run() {
-        try {
-            ServerSocket serverSocket = new ServerSocket(port);
+        try(ServerSocket serverSocket = new ServerSocket(port)) {
+
             System.out.println("Welcome to TCP Server");
             System.out.println("Waiting for a client...");
             MessageListener ml = new MessageListener(serverSocket.accept());

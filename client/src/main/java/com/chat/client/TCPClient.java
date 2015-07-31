@@ -22,10 +22,9 @@ public class TCPClient implements Client{
 
     @Override
     public void run() {
-        try {
-            Socket socket = new Socket(host, port);
+        try(Socket socket = new Socket(host, port);
             BufferedReader brSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter pwSocket = new PrintWriter(socket.getOutputStream(), true);
+            PrintWriter pwSocket = new PrintWriter(socket.getOutputStream(), true)) {
 
             System.out.println("Welcome to TCP Client");
             System.out.println("Write your message");
@@ -41,10 +40,6 @@ public class TCPClient implements Client{
                 serverMessage = brSocket.readLine();
                 System.out.println("From Server ::: " + serverMessage);
             }
-            pwSocket.close();
-            brSystem.close();
-            socket.close();
-            brSocket.close();
         } catch (UnknownHostException ex) {
             System.out.println("Unknown host - " + host);
             System.exit(1);

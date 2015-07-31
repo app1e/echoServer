@@ -19,10 +19,10 @@ public class UDPClient implements Client{
 
     @Override
     public void run() {
-        try {
-            BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-            DatagramSocket clientSocket = new DatagramSocket();
-            InetAddress IPAddress = InetAddress.getByName(host);
+        try (BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+             DatagramSocket clientSocket = new DatagramSocket()) {
+
+            InetAddress inetAddress = InetAddress.getByName(host);
             System.out.println("Welcome to UDP Client");
             System.out.println("Write your message");
             byte[] sendData = new byte[1024];
@@ -30,7 +30,7 @@ public class UDPClient implements Client{
             String sentence;
             while((sentence = inFromUser.readLine()) != null){
                 sendData = sentence.getBytes();
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, inetAddress, port);
                 clientSocket.send(sendPacket);
                 if (sentence.equalsIgnoreCase("close") || sentence.equalsIgnoreCase("exit")){
                     break;
@@ -39,9 +39,6 @@ public class UDPClient implements Client{
                 clientSocket.receive(receivePacket);
                 String serverMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 System.out.println("From Server ::: " + serverMessage);
-            }
-            if(null != clientSocket){
-                clientSocket.close();
             }
         }catch (UnknownHostException e) {
             System.out.println("Unknown host - " + host);

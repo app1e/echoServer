@@ -18,9 +18,9 @@ public class MessageListener implements Runnable{
 
     @Override
     public void run() {
-        try{
-            BufferedReader br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+        try(BufferedReader br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter pw = new PrintWriter(socket.getOutputStream(), true)){
+
             String clientMessage;
             System.out.println("Waiting for messages");
             while ((clientMessage = br.readLine()) != null) {
@@ -28,8 +28,6 @@ public class MessageListener implements Runnable{
                 System.out.println("Client Msg ::: " + clientMessage);
                 pw.println(clientMessage);
             }
-            pw.close();
-            br.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
